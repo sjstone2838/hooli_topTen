@@ -19,6 +19,42 @@ app.controller('MainController', ['$scope', '$http', '$filter', function($scope,
 	var url_post = 'http://predictive-hire-dev.us-west-2.elasticbeanstalk.com/token/'
 	var url_get = 'http://predictive-hire-dev.us-west-2.elasticbeanstalk.com/api/applications/'
 
+	// **************************** //
+	// ADDED BY SAM
+	
+	// parameters for POST call to get authorization token
+	var tokenPost = {
+  	method: 'POST',
+   	url: url_post,	
+   	headers: {
+    	'Content-Type': 'application/json'
+   	},
+   	data: { username: 'intern', password: 'hphp_2017' }
+  }
+
+  // Make POST call 
+  $http(tokenPost)
+  .then(function(response){
+  	
+  	var applicationsGet = {
+	  	method: 'GET',
+	   	url: url_get,	
+	   	headers: {
+	    	'Content-Type': 'application/json',
+	    	'Authorization': 'Token ' + response.data.token
+	   	}
+	  };
+
+	  // Now make GET call for first page of applications, 
+	  // using token in POST response
+  	$http(applicationsGet)
+  	.then(function(response){
+  		console.log(response);
+  	});
+  });
+
+  // **************************** //
+
 	$scope.cands_fifteen = [
 		{
 	      "id": 2267,
